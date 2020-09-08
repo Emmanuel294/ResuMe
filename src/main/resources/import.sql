@@ -1,0 +1,2 @@
+INSERT INTO user(name,surname,email,password,created_at,picture) VALUES('Emmanuel',' Cobian Zamora','emmanuel@gmail.com','12345','2020-07-19','');
+INSERT INTO user(name,surname,email,password,created_at,picture) VALUES('Memo',' Cobian Zamora','memorama@gmail.com','9898','2020-07-19','');
