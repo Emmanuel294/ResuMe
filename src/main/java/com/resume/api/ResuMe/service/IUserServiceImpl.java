@@ -3,10 +3,12 @@ package com.resume.api.ResuMe.service;
 import com.resume.api.ResuMe.dao.IUserDao;
 import com.resume.api.ResuMe.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Component
 public class IUserServiceImpl implements IUserService {
 
     @Autowired
