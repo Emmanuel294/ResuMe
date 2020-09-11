@@ -2,7 +2,10 @@ package com.resume.api.ResuMe.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="user")
@@ -19,6 +22,17 @@ public class User implements Serializable {
     private String password;
     private String picture;
 
+
+    @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Projects> projects;
+
+    @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Resume> resumes;
+
+    @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Tools> tools;
+
+
     @Column(name = "created_at")
     @Temporal(TemporalType.DATE)
     private Date createAt;
@@ -27,6 +41,14 @@ public class User implements Serializable {
     public void prePersist() {
         this.createAt = new Date();
     }
+
+    public User() {
+        projects = new ArrayList<>();
+        resumes = new ArrayList<>();
+        tools = new ArrayList<>();
+    }
+
+
 
     public void setId(long id) {
         this.id = id;
@@ -46,6 +68,44 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setProjects(List<Projects> projects) {
+        this.projects = projects;
+    }
+
+    public void setResumes(List<Resume> resumes) {
+        this.resumes = resumes;
+    }
+
+    public void setTools(List<Tools> tools) {
+        this.tools = tools;
+    }
+
+
+    public void addResume(Resume resume){
+        resumes.add(resume);
+    }
+
+    public void addProject(Projects project){
+        projects.add(project);
+    }
+
+    public void addTool(Tools tool){
+        tools.add(tool);
+    }
+
+
+    public List<Tools> getTools() {
+        return tools;
+    }
+
+    public List<Resume> getResumes() {
+        return resumes;
+    }
+
+    public List<Projects> getProjects() {
+        return projects;
     }
 
     public void setPicture(String picture) {
