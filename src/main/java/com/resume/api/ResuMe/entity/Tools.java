@@ -16,8 +16,21 @@ public class Tools implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    @Transient
+    private long idUser;
+
     private long projectId;
     private String name;
+
+
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void idUser(long userId) {
+        this.idUser = userId;
+    }
 
     public void setProjectId(long projectId) {
         this.projectId = projectId;
@@ -41,5 +54,9 @@ public class Tools implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public long getIdUser() {
+        return idUser;
     }
 }

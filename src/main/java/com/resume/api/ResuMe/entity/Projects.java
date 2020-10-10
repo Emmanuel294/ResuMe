@@ -90,4 +90,8 @@ public class Projects implements Serializable {
     public Date getEndDate() {
         return endDate;
     }
+
+    public User getUser() {
+        return user;
+    }
 }

@@ -21,9 +21,14 @@ public class UserRestController {
     }
 
     @GetMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
     public User getUser(@PathVariable Long id){
         return userService.findById(id);
+    }
+
+    @PostMapping("/users")
+    @ResponseStatus(HttpStatus.CREATED)
+    public User create(@RequestParam("user") User user){
+        return userService.save(user);
     }
 
     @PutMapping("/users/{id}")
@@ -36,8 +41,8 @@ public class UserRestController {
     }
 
     @DeleteMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id){
-        userService.delete(id);
         userService.delete(id);
     }
 }
