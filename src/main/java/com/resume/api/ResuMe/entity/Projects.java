@@ -91,7 +91,4 @@ public class Projects implements Serializable {
         return endDate;
     }
 
-    public User getUser() {
-        return user;
-    }
 }
