@@ -17,4 +17,6 @@ public interface IProjectService {
 
     public void delete(Long id);
 
+    void deleteProjectsResumes(Long id);
+
 }

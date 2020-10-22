@@ -68,7 +68,7 @@ public class ProjectsRestController {
     public void delete(@PathVariable Long id){
         Projects project = projectService.findById(id);
         project.getTools().removeAll(project.getTools());
-        project.getResumes().removeAll(project.getResumes());
+        projectService.deleteProjectsResumes(id);
         projectService.save(project);
         projectService.delete(id);
     }

@@ -32,4 +32,9 @@ public class IProjectServiceImpl implements IProjectService{
     public void delete(Long id) {
         projectDao.deleteById(id);
     }
+
+    @Override
+    public void deleteProjectsResumes(Long id) {
+        projectDao.deleteByProjectsId(id);
+    }
 }
