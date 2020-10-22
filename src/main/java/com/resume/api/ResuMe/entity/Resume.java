@@ -16,6 +16,4 @@ public class Resume implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToMany
-    private List<Projects> projects;
 }

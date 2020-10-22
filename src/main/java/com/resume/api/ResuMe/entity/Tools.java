@@ -2,7 +2,6 @@ package com.resume.api.ResuMe.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "tools")
@@ -19,7 +18,6 @@ public class Tools implements Serializable {
     @Transient
     private long idUser;
 
-    private long projectId;
     private String name;
 
 
@@ -30,10 +28,6 @@ public class Tools implements Serializable {
 
     public void idUser(long userId) {
         this.idUser = userId;
-    }
-
-    public void setProjectId(long projectId) {
-        this.projectId = projectId;
     }
 
     public void setName(String name) {
@@ -48,9 +42,6 @@ public class Tools implements Serializable {
         return id;
     }
 
-    public long getProjectId() {
-        return projectId;
-    }
 
     public String getName() {
         return name;

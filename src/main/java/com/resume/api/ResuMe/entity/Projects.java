@@ -32,8 +32,22 @@ public class Projects implements Serializable {
     @ManyToMany
     private List<Tools> tools;
 
+    @ManyToMany
+    private List<Resume> resumes;
+
+    @Transient
+    private long idUser;
+
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setResumes(List<Resume> resumes) {
+        this.resumes = resumes;
     }
 
     public void setName(String name) {
@@ -54,6 +68,10 @@ public class Projects implements Serializable {
 
     public void setTools(List<Tools> tools) {
         this.tools = tools;
+    }
+
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
     }
 
 
@@ -91,4 +109,11 @@ public class Projects implements Serializable {
         return endDate;
     }
 
+    public long getIdUser() {
+        return idUser;
+    }
+
+    public List<Resume> getResumes() {
+        return resumes;
+    }
 }

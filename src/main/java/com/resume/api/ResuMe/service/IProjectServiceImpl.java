@@ -3,9 +3,11 @@ package com.resume.api.ResuMe.service;
 import com.resume.api.ResuMe.dao.IProjectDao;
 import com.resume.api.ResuMe.entity.Projects;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class IProjectServiceImpl implements IProjectService{
 
     @Autowired
