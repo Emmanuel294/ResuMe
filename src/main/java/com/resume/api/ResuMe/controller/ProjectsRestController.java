@@ -2,7 +2,9 @@ package com.resume.api.ResuMe.controller;
 
 import com.resume.api.ResuMe.entity.Projects;
 import com.resume.api.ResuMe.entity.Tools;
+import com.resume.api.ResuMe.service.IProjectService;
 import com.resume.api.ResuMe.service.IProjectServiceImpl;
+import com.resume.api.ResuMe.service.IUserService;
 import com.resume.api.ResuMe.service.IUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,20 +17,20 @@ import java.util.List;
 public class ProjectsRestController {
 
     @Autowired
-    private IProjectServiceImpl projectService;
+    private IProjectService projectService;
 
     @Autowired
-    private IUserServiceImpl userService;
+    private IUserService userService;
 
 
 
     @GetMapping("/projects")
-    public List<Projects> tools(){
+    public List<Projects> projects(){
         return projectService.findAll();
     }
 
     @GetMapping("/projects/{id}")
-    public Projects tools(@PathVariable Long id){
+    public Projects projects(@PathVariable Long id){
         return projectService.findById(id);
     }
 
