@@ -18,3 +18,4 @@ INSERT INTO projects_tools(projects_id,tools_id) VALUES(2,5);
 INSERT INTO projects_tools(projects_id,tools_id) VALUES(2,1);
 INSERT INTO resume_projects(resume_id,projects_id) VALUES(1,1);
 INSERT INTO resume_projects(resume_id,projects_id) VALUES(1,2);
+INSERT INTO resume_projects(resume_id,projects_id) VALUES(2,1);

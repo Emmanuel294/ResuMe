@@ -19,4 +19,24 @@ public class Resume implements Serializable {
     @ManyToMany
     private List<Projects> projects;
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setProjects(List<Projects> projects) {
+        this.projects = projects;
+    }
+
+
+    public long getId() {
+        return id;
+    }
+
+    public List<Projects> getProjects() {
+        return projects;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
