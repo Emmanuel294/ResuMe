@@ -32,6 +32,9 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Tools> tools;
 
+    @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Leadership> leaderships;
+
 
     @Column(name = "created_at")
     @Temporal(TemporalType.DATE)
@@ -82,6 +85,17 @@ public class User implements Serializable {
         this.tools = tools;
     }
 
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
+    public void setLeaderships(List<Leadership> leaderships) {
+        this.leaderships = leaderships;
+    }
 
     public void addResume(Resume resume){
         resumes.add(resume);
@@ -106,14 +120,6 @@ public class User implements Serializable {
 
     public List<Projects> getProjects() {
         return projects;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
     }
 
     public static long getSerialVersionUID() {
@@ -146,5 +152,9 @@ public class User implements Serializable {
 
     public Date getCreateAt() {
         return createAt;
+    }
+
+    public List<Leadership> getLeaderships() {
+        return leaderships;
     }
 }
