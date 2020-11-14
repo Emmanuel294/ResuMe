@@ -1,5 +1,7 @@
 package com.resume.api.ResuMe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,13 +16,18 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @JsonIgnore
     private long id;
 
     private String name;
     private String surname;
     private String email;
+    @JsonIgnore
     private String password;
     private String picture;
+
+    @Transient
+    private String token;
 
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -97,6 +104,12 @@ public class User implements Serializable {
         this.leaderships = leaderships;
     }
 
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+
+
     public void addResume(Resume resume){
         resumes.add(resume);
     }
@@ -156,5 +169,9 @@ public class User implements Serializable {
 
     public List<Leadership> getLeaderships() {
         return leaderships;
+    }
+
+    public String getToken() {
+        return token;
     }
 }
