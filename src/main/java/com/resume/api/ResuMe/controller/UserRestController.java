@@ -59,14 +59,8 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<UserResponse> login(@RequestParam("user") String username, @RequestParam("password") String pwd) {
         User current = userService.findByEmail(username);
-        System.out.println("login");
-        if(current == null){
-            System.out.println("Invalid Credentials");
-            return null;
-        }
-        if(!current.getPassword().equals(pwd)){
-            System.out.println("Incorrect Password");
-            return null;
+        if(current == null || !current.getPassword().equals(pwd)){
+            return  new ResponseEntity<UserResponse>(new UserResponse(null,HttpStatus.NOT_FOUND.value(),"Error"),HttpStatus.NOT_FOUND);
         }
         String token = getJWTToken(username);
         current.setToken(token);
