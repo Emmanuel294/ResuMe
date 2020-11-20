@@ -22,7 +22,6 @@ public class User implements Serializable {
     private String name;
     private String surname;
     private String email;
-    @JsonIgnore
     private String password;
     private String picture;
 
@@ -31,15 +30,19 @@ public class User implements Serializable {
 
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Projects> projects;
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Resume> resumes;
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Tools> tools;
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Leadership> leaderships;
 
 

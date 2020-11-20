@@ -6,6 +6,7 @@ import com.resume.api.ResuMe.web.responses.Users.UserResponse;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,10 +17,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
+
+    private HttpHeaders headers = new HttpHeaders();
 
     @Autowired
     private IUserService userService;
@@ -36,8 +38,18 @@ public class UserRestController {
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestParam("user") User user){
-        return userService.save(user);
+    public ResponseEntity<UserResponse>  create(@RequestBody User user){
+        User created = userService.findByEmail(user.getEmail());
+        System.out.println(created);
+        if(created != null){
+            return new ResponseEntity<UserResponse>(new UserResponse(user,HttpStatus.OK.value(),"User already register"),HttpStatus.OK);
+        }
+
+        created = userService.save(user);
+        if(created == null){
+            return new ResponseEntity<UserResponse>(new UserResponse(user,HttpStatus.SERVICE_UNAVAILABLE.value(),"Service unavailable"),HttpStatus.SERVICE_UNAVAILABLE);
+        }
+        return new ResponseEntity<UserResponse>(new UserResponse(created,HttpStatus.OK.value(),"success"),HttpStatus.OK);
     }
 
     @PutMapping("/users/{id}")
