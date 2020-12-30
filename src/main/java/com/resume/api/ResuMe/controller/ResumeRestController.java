@@ -5,8 +5,11 @@ import com.resume.api.ResuMe.entity.Resume;
 import com.resume.api.ResuMe.entity.User;
 import com.resume.api.ResuMe.service.IResumeService;
 import com.resume.api.ResuMe.service.IUserService;
+import com.resume.api.ResuMe.web.responses.Resumes.ResumesResponse;
+import com.resume.api.ResuMe.web.responses.Users.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +30,13 @@ public class ResumeRestController {
     }
 
     @GetMapping("/resumes/{id}")
-    public List<Resume> resumes(@PathVariable Long id){
-        return resumeService.findAllByUserId(id);
+    public ResponseEntity<ResumesResponse> resumes(@PathVariable Long id){
+        List<Resume> resumes = resumeService.findAllByUserId(id);
+        if(resumes != null && resumes.size() > 0){
+            return new ResponseEntity<ResumesResponse>(new ResumesResponse(resumes,HttpStatus.OK.value(),"success"),HttpStatus.OK);
+        }
+
+        return new ResponseEntity<ResumesResponse>(new ResumesResponse(resumes,HttpStatus.OK.value(),"no content"),HttpStatus.OK);
     }
 
     @PostMapping("/resumes/{id}")

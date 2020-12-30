@@ -2,17 +2,22 @@ package com.resume.api.ResuMe.controller;
 
 import com.resume.api.ResuMe.entity.User;
 import com.resume.api.ResuMe.service.IUserService;
+import com.resume.api.ResuMe.service.IUserServiceImpl;
 import com.resume.api.ResuMe.web.responses.Users.UserResponse;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,10 +26,18 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class UserRestController {
 
-    private HttpHeaders headers = new HttpHeaders();
+    private final IUserServiceImpl userService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final HttpHeaders headers;
 
     @Autowired
-    private IUserService userService;
+    public UserRestController(IUserServiceImpl userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.headers = new HttpHeaders();
+    }
+
+
 
     @GetMapping("/users")
     public List<User> getUsers(){
@@ -40,10 +53,10 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserResponse>  create(@RequestBody User user){
         User created = userService.findByEmail(user.getEmail());
-        System.out.println(created);
         if(created != null){
             return new ResponseEntity<UserResponse>(new UserResponse(user,HttpStatus.OK.value(),"User already register"),HttpStatus.OK);
         }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         created = userService.save(user);
         if(created == null){
@@ -71,7 +84,7 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<UserResponse> login(@RequestParam("user") String username, @RequestParam("password") String pwd) {
         User current = userService.findByEmail(username);
-        if(current == null || !current.getPassword().equals(pwd)){
+        if(current == null || bCryptPasswordEncoder.matches(current.getPassword(),pwd)){
             return  new ResponseEntity<UserResponse>(new UserResponse(null,HttpStatus.NOT_FOUND.value(),"Error"),HttpStatus.NOT_FOUND);
         }
         String token = getJWTToken(username);
@@ -81,7 +94,7 @@ public class UserRestController {
     }
 
     private String getJWTToken(String username) {
-        String secretKey = "mySecretKey";
+        String secretKey = "My_Secret_Key_12abC";
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList("ROLE_USER");
 
