@@ -2,9 +2,9 @@ package com.resume.api.ResuMe.controller;
 
 import com.resume.api.ResuMe.entity.Projects;
 import com.resume.api.ResuMe.entity.Resume;
+import com.resume.api.ResuMe.entity.Tools;
 import com.resume.api.ResuMe.entity.User;
-import com.resume.api.ResuMe.service.IResumeService;
-import com.resume.api.ResuMe.service.IUserService;
+import com.resume.api.ResuMe.service.*;
 import com.resume.api.ResuMe.web.responses.Resumes.ResumesResponse;
 import com.resume.api.ResuMe.web.responses.Users.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,6 +21,12 @@ public class ResumeRestController {
 
     @Autowired
     IResumeService resumeService;
+
+    @Autowired
+    IProjectServiceImpl projectService;
+
+    @Autowired
+    IToolsServiceImpl toolsService;
 
     @Autowired
     IUserService userService;
@@ -45,6 +52,18 @@ public class ResumeRestController {
         User user = userService.findById(id);
         resume.setUser(user);
         return resumeService.save(resume);
+    }
+
+    @PostMapping("/resumes")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Resume update(@RequestBody Resume resume){
+        List<Projects> projectsToUpdate = resume.getProjects();
+        if(projectsToUpdate.size() > 0){
+            projectsToUpdate = projectService.editProjectsFromResumes(projectsToUpdate);
+        }
+        Resume resumeToUpdate = resumeService.findById(resume.getId());
+        resumeToUpdate.setProjects(projectsToUpdate);
+        return resumeService.save(resumeToUpdate);
     }
 
     @DeleteMapping("/resumes/{id}")

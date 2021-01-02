@@ -15,8 +15,12 @@ public interface IProjectService {
 
     public Projects save(Projects project);
 
+    List<Projects> saveAll(List<Projects> projects);
+
     public void delete(Long id);
 
     void deleteProjectsResumes(Long id);
+
+    List<Projects> editProjectsFromResumes(List<Projects> projects);
 
 }
