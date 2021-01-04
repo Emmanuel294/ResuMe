@@ -84,7 +84,7 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<UserResponse> login(@RequestParam("user") String username, @RequestParam("password") String pwd) {
         User current = userService.findByEmail(username);
-        if(current == null || bCryptPasswordEncoder.matches(current.getPassword(),pwd)){
+        if(current == null || !bCryptPasswordEncoder.matches(pwd,current.getPassword())){
             return  new ResponseEntity<UserResponse>(new UserResponse(null,HttpStatus.NOT_FOUND.value(),"Error"),HttpStatus.NOT_FOUND);
         }
         String token = getJWTToken(username);
@@ -107,7 +107,7 @@ public class UserRestController {
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 600000))
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(SignatureAlgorithm.HS512,
                         secretKey.getBytes()).compact();
 

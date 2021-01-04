@@ -57,8 +57,8 @@ public class User implements Serializable {
         projects = new ArrayList<>();
         resumes = new ArrayList<>();
         tools = new ArrayList<>();
+        leaderships = new ArrayList<>();
     }
-
 
 
     public void setId(long id) {

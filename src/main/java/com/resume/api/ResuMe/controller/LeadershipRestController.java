@@ -1,6 +1,7 @@
 package com.resume.api.ResuMe.controller;
 
 import com.resume.api.ResuMe.entity.Leadership;
+import com.resume.api.ResuMe.entity.Projects;
 import com.resume.api.ResuMe.entity.User;
 import com.resume.api.ResuMe.service.ILeadershipServiceImpl;
 import com.resume.api.ResuMe.service.IUserServiceImpl;
@@ -59,6 +60,7 @@ public class LeadershipRestController {
 
     @DeleteMapping("/leadership/{id}")
     public void delete(@PathVariable Long id){
+        leadershipService.deleteResumeLeaderships(id);
         leadershipService.delete(id);
     }
 }

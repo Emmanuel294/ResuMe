@@ -17,7 +17,7 @@ import java.util.List;
 public class ProjectsRestController {
 
     @Autowired
-    private IProjectService projectService;
+    private IProjectServiceImpl projectService;
 
     @Autowired
     private IUserService userService;

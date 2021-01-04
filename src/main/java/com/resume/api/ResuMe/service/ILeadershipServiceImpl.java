@@ -37,4 +37,6 @@ public class ILeadershipServiceImpl implements ILeadershipService{
     public void delete(Long id) {
         leadershipDao.deleteById(id);
     }
+
+    public void deleteResumeLeaderships(Long id){leadershipDao.deleteByLeadershipId(id);}
 }

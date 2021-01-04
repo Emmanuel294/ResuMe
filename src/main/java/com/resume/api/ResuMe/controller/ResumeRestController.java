@@ -46,6 +46,16 @@ public class ResumeRestController {
         return new ResponseEntity<ResumesResponse>(new ResumesResponse(resumes,HttpStatus.OK.value(),"no content"),HttpStatus.OK);
     }
 
+    @GetMapping("/resumes/{id}/{rid}")
+    public ResponseEntity<ResumesResponse> resumeById(@PathVariable Long rid,@PathVariable Long id){
+        Resume resume = resumeService.findById(rid);
+        if(resume != null && resume.getUser().getId() == id){
+            return new ResponseEntity<ResumesResponse>(new ResumesResponse(resume,HttpStatus.OK.value(),"success"),HttpStatus.OK);
+        }
+
+        return new ResponseEntity<ResumesResponse>(new ResumesResponse(new Resume(),HttpStatus.OK.value(),"no content"),HttpStatus.OK);
+    }
+
     @PostMapping("/resumes/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public Resume create(@RequestBody Resume resume, @PathVariable Long id){

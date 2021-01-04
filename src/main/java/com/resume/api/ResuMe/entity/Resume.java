@@ -1,5 +1,9 @@
 package com.resume.api.ResuMe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -14,10 +18,22 @@ public class Resume implements Serializable {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @Getter
+    @Setter
+    @JsonIgnore
     private User user;
 
     @ManyToMany
     private List<Projects> projects;
+
+    @ManyToMany
+    @Getter
+    @Setter
+    private List<Leadership> leaderships;
+
+    public Resume(){
+
+    }
 
     public void setId(long id) {
         this.id = id;
