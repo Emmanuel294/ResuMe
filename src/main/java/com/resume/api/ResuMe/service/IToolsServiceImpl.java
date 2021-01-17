@@ -25,6 +25,11 @@ public class IToolsServiceImpl implements IToolsService{
     }
 
     @Override
+    public List<Tools> findAllByUserId(Long id) {
+        return iToolsDao.findAllByUserId(id);
+    }
+
+    @Override
     public Tools save(Tools tool) {
         return iToolsDao.save(tool);
     }
@@ -54,5 +59,9 @@ public class IToolsServiceImpl implements IToolsService{
         }
 
         return iToolsDao.saveAll(newToolsList);
+    }
+
+    public void deleteProjectsTools(Long id){
+        iToolsDao.deleteByToolId(id);
     }
 }

@@ -1,5 +1,10 @@
 package com.resume.api.ResuMe.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.tools.Tool;
 import java.io.Serializable;
@@ -16,17 +21,28 @@ public class Projects implements Serializable {
     private long id;
 
     private String name;
+    @Lob
     private String description;
+    private String company;
 
     @Column(name = "started_date")
     @Temporal(TemporalType.DATE)
+    @JsonFormat(shape=JsonFormat.Shape.STRING,timezone="UTC")
     private Date startedDate;
 
     @Column(name = "end_date")
     @Temporal(TemporalType.DATE)
+    @JsonFormat(shape=JsonFormat.Shape.STRING,timezone="UTC")
     private Date endDate;
 
+    @Getter
+    @Setter
+    private Boolean currentlyWorking;
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @Getter
+    @Setter
+    @JsonIgnore
     private User user;
 
     @ManyToMany

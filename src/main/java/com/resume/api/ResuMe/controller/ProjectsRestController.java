@@ -2,14 +2,19 @@ package com.resume.api.ResuMe.controller;
 
 import com.resume.api.ResuMe.entity.Projects;
 import com.resume.api.ResuMe.entity.Tools;
+import com.resume.api.ResuMe.entity.User;
 import com.resume.api.ResuMe.service.IProjectService;
 import com.resume.api.ResuMe.service.IProjectServiceImpl;
 import com.resume.api.ResuMe.service.IUserService;
 import com.resume.api.ResuMe.service.IUserServiceImpl;
+import com.resume.api.ResuMe.web.responses.Projects.ProjectsResponse;
+import com.resume.api.ResuMe.web.responses.Tools.ToolsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,28 +29,40 @@ public class ProjectsRestController {
 
 
 
-    @GetMapping("/projects")
-    public List<Projects> projects(){
-        return projectService.findAll();
-    }
-
     @GetMapping("/projects/{id}")
-    public Projects projects(@PathVariable Long id){
-        return projectService.findById(id);
+    public ResponseEntity<ProjectsResponse> projectsByUser(@PathVariable Long id){
+        List<Projects> projects = projectService.findAllByUserId(id);
+        if(projects != null && projects.size() > 0){
+            return new ResponseEntity<ProjectsResponse>(new ProjectsResponse(projects,HttpStatus.OK.value(),"success"),HttpStatus.OK);
+        }
+        return new ResponseEntity<ProjectsResponse>(new ProjectsResponse(projects,HttpStatus.OK.value(),"no content"),HttpStatus.OK);
     }
 
-    @PostMapping("/projects")
+    @GetMapping("/projects/{id}/{pid}")
+    public ResponseEntity<ProjectsResponse> projects(@PathVariable Long id,@PathVariable Long pid){
+        Projects project = projectService.findById(pid);
+        if(project != null && project.getUser().getId() == id){
+            return new ResponseEntity<ProjectsResponse>(new ProjectsResponse(project,HttpStatus.OK.value(),"success"),HttpStatus.OK);
+        }
+        return new ResponseEntity<ProjectsResponse>(new ProjectsResponse(new Projects(),HttpStatus.OK.value(),"no content"),HttpStatus.OK);
+    }
+
+    @PostMapping("/projects/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Projects create(@RequestBody Projects project){
-        project.setUser(userService.findById(project.getIdUser()));
-        return projectService.save(project);
+    public ResponseEntity<ProjectsResponse>  create(@PathVariable Long id,@RequestBody Projects project){
+        project.setUser(userService.findById(id));
+        Projects createdProject = projectService.save(project);
+        if(createdProject != null){
+            return new ResponseEntity<ProjectsResponse>(new ProjectsResponse(createdProject,HttpStatus.OK.value(),"success"),HttpStatus.OK);
+        }
+        return new ResponseEntity<ProjectsResponse>(new ProjectsResponse(project,HttpStatus.OK.value(),"no content"),HttpStatus.OK);
     }
 
     @PutMapping("/projects/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Projects update(@PathVariable Long id, @RequestBody Projects project){
-        Projects current = projectService.findById(id);
-        if(current != null){
+    public ResponseEntity<ProjectsResponse> update(@PathVariable Long id, @RequestBody Projects project){
+        Projects current = projectService.findById(project.getId());
+        if(current != null && current.getUser().getId() == id){
             if(project.getName() != null){
                 current.setName(project.getName());
             }
@@ -61,17 +78,26 @@ public class ProjectsRestController {
             if(project.getEndDate() != null){
                 current.setEndDate(project.getEndDate());
             }
+
+            project =  projectService.save(current);
+            return new ResponseEntity<ProjectsResponse>(new ProjectsResponse(project,HttpStatus.OK.value(),"success"),HttpStatus.OK);
         }
 
-        return projectService.save(current);
+        return new ResponseEntity<ProjectsResponse>(new ProjectsResponse(project,HttpStatus.OK.value(),"This project is not yours"),HttpStatus.OK);
+
     }
 
-    @DeleteMapping("/projects/{id}")
-    public void delete(@PathVariable Long id){
-        Projects project = projectService.findById(id);
-        project.getTools().removeAll(project.getTools());
-        projectService.deleteProjectsResumes(id);
-        projectService.save(project);
-        projectService.delete(id);
+    @DeleteMapping("/projects/{id}/{pid}")
+    public ResponseEntity<ProjectsResponse> delete(@PathVariable Long id, @PathVariable Long pid){
+        Projects project = projectService.findById(pid);
+        if(project != null && project.getUser().getId() == id){
+            project.getTools().removeAll(project.getTools());
+            projectService.deleteProjectsResumes(pid);
+            projectService.save(project);
+            projectService.delete(pid);
+            return new ResponseEntity<ProjectsResponse>(new ProjectsResponse(project,HttpStatus.OK.value(),"success"),HttpStatus.OK);
+        }
+        return new ResponseEntity<ProjectsResponse>(new ProjectsResponse(project,HttpStatus.OK.value(),"This project is not yours"),HttpStatus.OK);
+
     }
 }

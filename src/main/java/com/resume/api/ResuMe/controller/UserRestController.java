@@ -57,7 +57,6 @@ public class UserRestController {
             return new ResponseEntity<UserResponse>(new UserResponse(user,HttpStatus.OK.value(),"User already register"),HttpStatus.OK);
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-
         created = userService.save(user);
         if(created == null){
             return new ResponseEntity<UserResponse>(new UserResponse(user,HttpStatus.SERVICE_UNAVAILABLE.value(),"Service unavailable"),HttpStatus.SERVICE_UNAVAILABLE);

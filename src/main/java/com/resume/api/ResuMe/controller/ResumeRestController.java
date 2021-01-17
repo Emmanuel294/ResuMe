@@ -20,7 +20,7 @@ import java.util.List;
 public class ResumeRestController {
 
     @Autowired
-    IResumeService resumeService;
+    IResumeServiceImpl resumeService;
 
     @Autowired
     IProjectServiceImpl projectService;

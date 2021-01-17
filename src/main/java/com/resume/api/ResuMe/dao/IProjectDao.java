@@ -8,11 +8,15 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface IProjectDao extends JpaRepository<Projects,Long> {
 
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM resume_projects WHERE projects_id = :projectId", nativeQuery = true)
     public void deleteByProjectsId(@Param("projectId") Long id);
+
+    List<Projects> findAllByUserId(@Param("userId") Long id);
 
 }

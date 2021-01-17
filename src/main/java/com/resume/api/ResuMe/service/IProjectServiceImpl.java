@@ -79,4 +79,8 @@ public class IProjectServiceImpl implements IProjectService{
 
         return projectDao.saveAll(projectsToUpdate);
     }
+
+    public List<Projects> findAllByUserId(Long id) {
+        return projectDao.findAllByUserId(id);
+    }
 }

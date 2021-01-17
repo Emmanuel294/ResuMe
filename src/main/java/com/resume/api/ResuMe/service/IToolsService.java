@@ -13,6 +13,8 @@ public interface IToolsService {
 
     public Tools findById(Long id);
 
+    List<Tools> findAllByUserId(Long id);
+
     public Tools save(Tools tool);
 
     List<Tools> saveAll(List<Tools> tool);

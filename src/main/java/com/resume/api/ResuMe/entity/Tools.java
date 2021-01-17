@@ -1,5 +1,9 @@
 package com.resume.api.ResuMe.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -13,6 +17,9 @@ public class Tools implements Serializable {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @Getter
+    @Setter
+    @JsonIgnore
     private User user;
 
     @Transient
